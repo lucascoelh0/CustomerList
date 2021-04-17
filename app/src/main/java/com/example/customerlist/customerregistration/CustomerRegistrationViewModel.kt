@@ -1,4 +1,9 @@
 package com.example.customerlist.customerregistration
 
-class CustomerRegistrationViewModel {
+import androidx.lifecycle.ViewModel
+import com.example.customerlist.database.CustomerDatabaseDao
+
+class CustomerRegistrationViewModel(
+    val database: CustomerDatabaseDao
+) : ViewModel() {
 }
