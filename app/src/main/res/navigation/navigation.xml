@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/customerListFragment">
+
+    <fragment
+        android:id="@+id/customerListFragment"
+        android:name="com.example.customerlist.customerlist.CustomerListFragment"
+        android:label="fragment_customer_list"
+        tools:layout="@layout/fragment_customer_list">
+        <action
+            android:id="@+id/action_customerListFragment_to_customerRegistrationFragment"
+            app:destination="@id/customerRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_right" />
+        <action
+            android:id="@+id/action_customerListFragment_to_customerDetailFragment"
+            app:destination="@id/customerDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_right" />
+        <argument
+            android:name="isSaved"
+            app:argType="boolean"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/customerRegistrationFragment"
+        android:name="com.example.customerlist.customerregistration.CustomerRegistrationFragment"
+        android:label="fragment_customer_registration"
+        tools:layout="@layout/fragment_customer_registration">
+        <action
+            android:id="@+id/action_customerRegistrationFragment_to_customerListFragment"
+            app:destination="@id/customerListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/customerDetailFragment"
+        android:name="com.example.customerlist.customerdetail.CustomerDetailFragment"
+        android:label="fragment_customer_detail"
+        tools:layout="@layout/fragment_customer_detail">
+        <argument
+            android:name="customerKey"
+            app:argType="long" />
+    </fragment>
+
+</navigation>

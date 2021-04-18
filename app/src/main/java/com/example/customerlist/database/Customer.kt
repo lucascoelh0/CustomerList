@@ -22,7 +22,7 @@ data class Customer(
     var registrationDateHour: String = Date().toString(),
 
     @ColumnInfo(name = "date_of_birth")
-    var dateOfBirth: String = LocalDateTime.MIN.toString(),
+    var dateOfBirth: String = "",
 
     @ColumnInfo(name = "ufId")
     var uf: String = ""

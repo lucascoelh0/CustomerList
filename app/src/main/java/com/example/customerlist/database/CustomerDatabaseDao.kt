@@ -6,13 +6,6 @@ import androidx.room.*
 @Dao
 interface CustomerDatabaseDao {
 
-    //Uf
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun populateUfs(ufs: List<Uf>)
-
-    @Query("SELECT * FROM uf_table")
-    suspend fun getUfs(): List<Uf>
-
     //Customer
     @Insert
     suspend fun insertCustomer(customer: Customer)
@@ -34,7 +27,7 @@ interface CustomerDatabaseDao {
     suspend fun updatePhone(phone: Phone)
 
     @Query("SELECT * FROM phone_table WHERE customer_id = :key")
-    suspend fun getCustomerPhones(key: Long): LiveData<List<Phone>>
+    fun getCustomerPhones(key: Long): LiveData<List<Phone>>
 
     @Query("DELETE FROM phone_table WHERE phoneId = :key")
     suspend fun deletePhone(key: Long)

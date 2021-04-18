@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".customerregistration.CustomerRegistrationFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="customerRegistrationViewModel"
+            type="com.example.customerlist.customerregistration.CustomerRegistrationViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="@dimen/margin">
 
-</FrameLayout>
+        <EditText
+            android:id="@+id/name_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_baseline_person_outline_24"
+            android:drawablePadding="@dimen/drawable_margin"
+            android:hint="@string/nome"
+            android:inputType="text"
+            android:text="@={customerRegistrationViewModel.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/cpf_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:drawableStart="@drawable/ic_outline_description_24"
+            android:drawablePadding="@dimen/drawable_margin"
+            android:hint="@string/cpf"
+            android:inputType="number"
+            android:maxLength="11"
+            android:text="@={customerRegistrationViewModel.cpf}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_edit_text" />
+
+        <EditText
+            android:id="@+id/registration_date_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:drawableStart="@drawable/ic_outline_calendar_today_24"
+            android:drawablePadding="@dimen/drawable_margin"
+            android:hint="@string/data_do_cadastro"
+            app:layout_constraintEnd_toStartOf="@+id/registration_hour_edit_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cpf_edit_text" />
+
+        <EditText
+            android:id="@+id/registration_hour_edit_text"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:drawableStart="@drawable/ic_outline_access_time_24"
+            android:drawablePadding="@dimen/drawable_margin"
+            android:hint="@string/hora"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cpf_edit_text" />
+
+        <EditText
+            android:id="@+id/date_of_birth_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:drawableStart="@drawable/ic_outline_calendar_today_24"
+            android:drawablePadding="@dimen/drawable_margin"
+            android:hint="@string/data_de_nascimento"
+            app:layout_constraintEnd_toStartOf="@+id/uf_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_date_edit_text" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/uf_spinner"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin"
+            android:entries="@array/ufs_array"
+            app:layout_constraintBottom_toBottomOf="@+id/date_of_birth_edit_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registration_hour_edit_text"
+            tools:setOnItemSelectedListener="@{customerRegistrationViewModel.spinnerClickListener}" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:enabled="@{customerRegistrationViewModel.valid}"
+            android:onClick="@{() -> customerRegistrationViewModel.onSave()}"
+            android:text="@string/salvar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_of_birth_edit_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

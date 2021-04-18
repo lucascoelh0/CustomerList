@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="customer"
+            type="com.example.customerlist.database.Customer" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin">
+
+        <xyz.schwaab.avvylib.AvatarView
+            android:id="@+id/customer_avatar"
+            avatarText="@{customer}"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:avvy_text_size="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:text="@{customer.name}"
+            android:textColor="@color/customer_name"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/uf_text"
+            app:layout_constraintStart_toEndOf="@id/customer_avatar"
+            app:layout_constraintTop_toTopOf="@+id/customer_avatar" />
+
+        <TextView
+            android:id="@+id/uf_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:text="@{customer.uf}"
+            android:textColor="@color/uf"
+            app:layout_constraintBottom_toBottomOf="@+id/customer_avatar"
+            app:layout_constraintStart_toEndOf="@id/customer_avatar"
+            app:layout_constraintTop_toBottomOf="@id/name_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

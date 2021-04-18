@@ -1,27 +1,76 @@
 package com.example.customerlist.customerlist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.customerlist.R
+import com.example.customerlist.database.CustomerDatabase
+import com.example.customerlist.databinding.FragmentCustomerListBinding
+import com.google.android.material.snackbar.Snackbar
 
 class CustomerListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_customer_list, container, false)
+
+        val binding: FragmentCustomerListBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_customer_list, container, false
+        )
+
+        val application = requireNotNull(this.activity).application
+        val dataSource = CustomerDatabase.getInstance(application).customerDatabaseDao
+
+        val viewModelFactory = CustomerListViewModelFactory(dataSource)
+        val customerListViewModel =
+            ViewModelProvider(this, viewModelFactory).get(CustomerListViewModel::class.java)
+
+        binding.customerListViewModel = customerListViewModel
+        binding.lifecycleOwner = this
+
+        customerListViewModel.navigateToCustomerRegistration.observe(viewLifecycleOwner, {
+            if (it == true) {
+                this.findNavController().navigate(
+                    CustomerListFragmentDirections
+                        .actionCustomerListFragmentToCustomerRegistrationFragment()
+                )
+                customerListViewModel.doneNavigatingToRegistration()
+            }
+        })
+
+        val registrationArgs = arguments?.let { CustomerListFragmentArgs.fromBundle(it) }
+        if (registrationArgs !== null) {
+            customerListViewModel.showSnackbarSaved.value = registrationArgs.isSaved
+        }
+
+        customerListViewModel.showSnackbarSaved.observe(viewLifecycleOwner, {
+            if (it == true) {
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    getString(R.string.cliente_salvo),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+
+                customerListViewModel.doneShowingSnackbarSaved()
+            }
+        })
+
+        val adapter = CustomerAdapter()
+        binding.customerList.adapter = adapter
+
+        customerListViewModel.customers.observe(viewLifecycleOwner, { customers ->
+            customers?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        return binding.root
     }
 }
