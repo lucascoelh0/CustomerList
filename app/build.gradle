@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -69,4 +69,7 @@ dependencies {
 
     //AvatarView
     implementation "xyz.schwaab:avvylib:1.2.0"
+
+    //Mask edittext
+    implementation 'io.github.vicmikhailau:MaskedEditText:4.0.5'
 }
