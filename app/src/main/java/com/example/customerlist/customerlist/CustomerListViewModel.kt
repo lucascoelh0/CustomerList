@@ -18,6 +18,11 @@ class CustomerListViewModel(
     val navigateToCustomerRegistration: LiveData<Boolean?>
         get() = _navigateToCustomerRegistration
 
+    private val _navigateToCustomerDetails = MutableLiveData<Long?>()
+
+    val navigateToCustomerDetails: MutableLiveData<Long?>
+        get() = _navigateToCustomerDetails
+
     val customers = database.getAllCustomers()
 
     val noCustomersTextVisible = Transformations.map(customers) {
@@ -28,12 +33,6 @@ class CustomerListViewModel(
         if (it.isEmpty()) View.GONE else View.VISIBLE
     }
 
-    var showSnackbarSaved = MutableLiveData<Boolean?>()
-
-    fun doneShowingSnackbarSaved() {
-        showSnackbarSaved.value = null
-    }
-
     fun doneNavigatingToRegistration() {
         _navigateToCustomerRegistration.value = null
     }
@@ -42,4 +41,11 @@ class CustomerListViewModel(
         _navigateToCustomerRegistration.value = true
     }
 
+    fun onCustomerClick(id: Long) {
+        _navigateToCustomerDetails.value = id
+    }
+
+    fun doneNavigatingToDetails() {
+        _navigateToCustomerDetails.value = null
+    }
 }

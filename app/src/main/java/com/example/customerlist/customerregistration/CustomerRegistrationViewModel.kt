@@ -6,12 +6,14 @@ import android.widget.EditText
 import androidx.lifecycle.*
 import com.example.customerlist.database.Customer
 import com.example.customerlist.database.CustomerDatabaseDao
+import com.example.customerlist.database.Phone
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CustomerRegistrationViewModel(
     dataSource: CustomerDatabaseDao
@@ -43,7 +45,13 @@ class CustomerRegistrationViewModel(
     val clickHourOfRegistration: LiveData<Boolean?>
         get() = _clickHourOfRegistration
 
+    private val _clickAddNumber = MutableLiveData<Boolean?>()
+
+    val clickAddNumber: LiveData<Boolean?>
+        get() = _clickAddNumber
+
     private val dateFormat = "dd/MM/yyyy"
+    val phoneEditTextArray = MutableLiveData<MutableList<EditText>>(mutableListOf())
     val name = MutableLiveData("")
     val cpf = MutableLiveData("")
     val uf = MutableLiveData("")
@@ -124,6 +132,14 @@ class CustomerRegistrationViewModel(
             } else if (isOlderThan18Required()) {
                 return isOlderThan18()
             }
+            phoneEditTextArray.value?.forEach {
+                if (it.text.isNotEmpty()) {
+                    if (it.length() < 8) {
+                        return false
+                    }
+                }
+            }
+
             return true
         }
 
@@ -142,6 +158,10 @@ class CustomerRegistrationViewModel(
         _clickHourOfRegistration.value = true
     }
 
+    fun onAddNumber() {
+        _clickAddNumber.value = true
+    }
+
     fun onSave() {
         viewModelScope.launch {
             val newCustomer = Customer()
@@ -150,8 +170,30 @@ class CustomerRegistrationViewModel(
                 name = this@CustomerRegistrationViewModel.name.value.toString()
                 cpf = this@CustomerRegistrationViewModel.cpf.value.toString()
                 uf = this@CustomerRegistrationViewModel.uf.value.toString()
+                dateOfBirth = this@CustomerRegistrationViewModel.dateOfBirth.value.toString()
             }
+            if (dateOfRegistration.value?.isNotEmpty() == true) {
+                if (hourOfRegistration.value?.isNotEmpty() == true) {
+                    newCustomer.registrationDateHour =
+                        "${dateOfRegistration.value} - ${hourOfRegistration.value}"
+                } else {
+                    newCustomer.registrationDateHour = dateOfRegistration.value.toString()
+                }
+            }
+
             database.insertCustomer(newCustomer)
+
+            val lastInsertedCustomer = database.getLastInsertedCustomer()
+            if (lastInsertedCustomer !== null) {
+                phoneEditTextArray.value?.forEach {
+                    if (it.text.isNotEmpty()) {
+                        val phone = Phone()
+                        phone.customerId = lastInsertedCustomer.customerId
+                        phone.phone = it.text.toString()
+                        database.insertPhone(phone)
+                    }
+                }
+            }
 
             _navigateToCustomerList.value = true
         }

@@ -16,8 +16,14 @@ interface CustomerDatabaseDao {
     @Query("DELETE FROM customer_table WHERE customerId = :key")
     suspend fun deleteCustomer(key: Long)
 
-    @Query("SELECT * FROM customer_table")
+    @Query("SELECT * FROM customer_table ORDER BY name")
     fun getAllCustomers(): LiveData<List<Customer>>
+
+    @Query("SELECT * FROM customer_table WHERE customerId = :key")
+    fun getCustomerWithId(key: Long): LiveData<Customer>
+
+    @Query("SELECT * FROM customer_table ORDER BY customerId DESC LIMIT 1")
+    suspend fun getLastInsertedCustomer(): Customer?
 
     //Phone
     @Insert

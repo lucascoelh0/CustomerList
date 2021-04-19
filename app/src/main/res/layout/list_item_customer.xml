@@ -8,19 +8,25 @@
             name="customer"
             type="com.example.customerlist.database.Customer" />
 
+        <variable
+            name="clickListener"
+            type="com.example.customerlist.customerlist.CustomerListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin">
+        android:paddingBottom="@dimen/margin"
+        android:onClick="@{() -> clickListener.onClick(customer)}">
 
         <xyz.schwaab.avvylib.AvatarView
             android:id="@+id/customer_avatar"
             avatarText="@{customer}"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:avvy_text_size="24sp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:avvy_border_thickness="2dp"
+            app:avvy_text_size="21sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

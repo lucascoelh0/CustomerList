@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.customerlist.R
@@ -45,29 +44,24 @@ class CustomerListFragment : Fragment() {
             }
         })
 
-        val registrationArgs = arguments?.let { CustomerListFragmentArgs.fromBundle(it) }
-        if (registrationArgs !== null) {
-            customerListViewModel.showSnackbarSaved.value = registrationArgs.isSaved
-        }
-
-        customerListViewModel.showSnackbarSaved.observe(viewLifecycleOwner, {
-            if (it == true) {
-                Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    getString(R.string.cliente_salvo),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-
-                customerListViewModel.doneShowingSnackbarSaved()
-            }
+        val adapter = CustomerAdapter(CustomerListener { customerId ->
+            customerListViewModel.onCustomerClick(customerId)
         })
-
-        val adapter = CustomerAdapter()
         binding.customerList.adapter = adapter
 
         customerListViewModel.customers.observe(viewLifecycleOwner, { customers ->
             customers?.let {
                 adapter.submitList(it)
+            }
+        })
+
+        customerListViewModel.navigateToCustomerDetails.observe(viewLifecycleOwner, { customer ->
+            customer?.let {
+                this.findNavController().navigate(
+                    CustomerListFragmentDirections
+                        .actionCustomerListFragmentToCustomerDetailFragment(customer)
+                )
+                customerListViewModel.doneNavigatingToDetails()
             }
         })
 

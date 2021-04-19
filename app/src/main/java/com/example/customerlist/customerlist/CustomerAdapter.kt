@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.customerlist.database.Customer
 import com.example.customerlist.databinding.ListItemCustomerBinding
 
-class CustomerAdapter : ListAdapter<Customer, CustomerAdapter.ViewHolder>(CustomerDiffCallback()) {
+class CustomerAdapter(val clickListener: CustomerListener) : ListAdapter<Customer, CustomerAdapter.ViewHolder>(CustomerDiffCallback()) {
 
     class CustomerDiffCallback : DiffUtil.ItemCallback<Customer>() {
         override fun areItemsTheSame(oldItem: Customer, newItem: Customer): Boolean {
@@ -31,8 +31,9 @@ class CustomerAdapter : ListAdapter<Customer, CustomerAdapter.ViewHolder>(Custom
             }
         }
 
-        fun bind(item: Customer) {
+        fun bind(item: Customer, clickListener: CustomerListener) {
             binding.customer = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }
@@ -43,6 +44,10 @@ class CustomerAdapter : ListAdapter<Customer, CustomerAdapter.ViewHolder>(Custom
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
+}
+
+class CustomerListener(val clickListener: (customerId: Long) -> Unit) {
+    fun onClick(customer: Customer) = clickListener(customer.customerId)
 }

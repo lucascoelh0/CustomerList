@@ -14,4 +14,12 @@
     <string name="data_de_nascimento">Data de nascimento</string>
     <string name="salvar">Salvar</string>
     <string name="cliente_salvo">Cliente salvo com sucesso!</string>
+    <string name="close">Close</string>
+    <string name="uf">UF</string>
+    <string name="telefone">Telefone</string>
+    <string name="phones">Phones</string>
+    <string name="telefones">Telefones</string>
+    <string name="sem_telefones_cadastrados">Sem telefones cadastrados</string>
+    <string name="nao_cadastrada">Não cadastrada</string>
+    <string name="nao_cadastrado">Não cadastrado</string>
 </resources>

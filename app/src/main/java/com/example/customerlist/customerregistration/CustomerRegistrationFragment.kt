@@ -3,12 +3,12 @@ package com.example.customerlist.customerregistration
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,19 +16,19 @@ import androidx.navigation.fragment.findNavController
 import com.example.customerlist.R
 import com.example.customerlist.database.CustomerDatabase
 import com.example.customerlist.databinding.FragmentCustomerRegistrationBinding
-import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class CustomerRegistrationFragment : Fragment() {
 
     var cal = Calendar.getInstance()
+    private lateinit var binding: FragmentCustomerRegistrationBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentCustomerRegistrationBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_customer_registration, container, false
         )
 
@@ -47,22 +47,11 @@ class CustomerRegistrationFragment : Fragment() {
             if (it == true) {
                 this.findNavController().navigate(
                     CustomerRegistrationFragmentDirections
-                        .actionCustomerRegistrationFragmentToCustomerListFragment(true)
+                        .actionCustomerRegistrationFragmentToCustomerListFragment()
                 )
                 customerRegistrationViewModel.doneNavigating()
             }
         })
-
-        //Apertando o botão de voltar
-        requireActivity().onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().navigate(
-                        CustomerRegistrationFragmentDirections
-                            .actionCustomerRegistrationFragmentToCustomerListFragment(false)
-                    )
-                }
-            })
 
         val dateSetListenerBirth = object : DatePickerDialog.OnDateSetListener {
             override fun onDateSet(
@@ -109,6 +98,14 @@ class CustomerRegistrationFragment : Fragment() {
             }
         })
 
+        customerRegistrationViewModel.phoneEditTextArray.value?.add(binding.phoneEditText)
+
+        customerRegistrationViewModel.clickAddNumber.observe(viewLifecycleOwner, {
+            val editText = createPhoneField()
+            customerRegistrationViewModel.phoneEditTextArray.value?.add(editText)
+            binding.editTextContainerLl.addView(editText)
+        })
+
         return binding.root
     }
 
@@ -120,5 +117,21 @@ class CustomerRegistrationFragment : Fragment() {
             cal.get(Calendar.MONTH),
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
+    }
+
+    fun createPhoneField(): EditText {
+        val editText = EditText(context)
+        editText.setCompoundDrawablesWithIntrinsicBounds(
+            R.drawable.ic_outline_local_phone_24,
+            0,
+            0,
+            0
+        )
+        editText.hint = getString(R.string.telefone)
+        editText.compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.margin)
+        editText.inputType = InputType.TYPE_CLASS_PHONE
+        editText.maxLines = 1
+
+        return editText
     }
 }

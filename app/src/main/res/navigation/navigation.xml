@@ -20,9 +20,6 @@
             app:destination="@id/customerDetailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:popEnterAnim="@anim/slide_in_right" />
-        <argument
-            android:name="isSaved"
-            app:argType="boolean"/>
     </fragment>
 
     <fragment
@@ -42,6 +39,7 @@
         tools:layout="@layout/fragment_customer_detail">
         <argument
             android:name="customerKey"
+            app:nullable="false"
             app:argType="long" />
     </fragment>
 
