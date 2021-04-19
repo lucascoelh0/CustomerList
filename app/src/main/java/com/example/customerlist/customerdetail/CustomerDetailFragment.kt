@@ -7,27 +7,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.Phonelist.Phonedetail.PhoneAdapter
 import com.example.customerlist.R
-import com.example.customerlist.customerlist.CustomerAdapter
-import com.example.customerlist.customerlist.CustomerListener
 import com.example.customerlist.database.CustomerDatabase
 import com.example.customerlist.databinding.FragmentCustomerDetailBinding
 
 class CustomerDetailFragment : Fragment() {
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var binding: FragmentCustomerDetailBinding
+    private lateinit var customerDetailViewModel: CustomerDetailViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        val binding: FragmentCustomerDetailBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_customer_detail, container, false
         )
 
@@ -37,20 +31,8 @@ class CustomerDetailFragment : Fragment() {
         val dataSource = CustomerDatabase.getInstance(application).customerDatabaseDao
         val viewModelFactory = CustomerDetailViewModelFactory(arguments.customerKey, dataSource)
 
-        val customerDetailViewModel =
+        customerDetailViewModel =
             ViewModelProvider(this, viewModelFactory).get(CustomerDetailViewModel::class.java)
-
-        binding.customerDetailViewModel = customerDetailViewModel
-        binding.lifecycleOwner = this
-
-        val adapter = PhoneAdapter()
-        binding.phoneList.adapter = adapter
-
-        customerDetailViewModel.phones.observe(viewLifecycleOwner, { customers ->
-            customers?.let {
-                adapter.submitList(it)
-            }
-        })
 
         customerDetailViewModel.getCustomer().observe(viewLifecycleOwner, {
             if (it !== null) {
@@ -59,6 +41,22 @@ class CustomerDetailFragment : Fragment() {
             }
         })
 
+        binding.customerDetailViewModel = customerDetailViewModel
+        binding.lifecycleOwner = this
+
+        initializeAdapter()
+
         return binding.root
+    }
+
+    private fun initializeAdapter() {
+        val adapter = PhoneAdapter()
+        binding.phoneList.adapter = adapter
+
+        customerDetailViewModel.phones.observe(viewLifecycleOwner, { customers ->
+            customers?.let {
+                adapter.submitList(it)
+            }
+        })
     }
 }

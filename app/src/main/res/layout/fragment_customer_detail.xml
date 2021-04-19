@@ -28,6 +28,7 @@
             android:id="@+id/customer_avatarview"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="@dimen/margin"
             app:avvy_border_color="@color/white"
             app:avvy_text_size="30sp"
             app:layout_constraintEnd_toEndOf="parent"

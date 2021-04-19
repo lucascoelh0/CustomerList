@@ -29,7 +29,9 @@
         tools:layout="@layout/fragment_customer_registration">
         <action
             android:id="@+id/action_customerRegistrationFragment_to_customerListFragment"
-            app:destination="@id/customerListFragment" />
+            app:destination="@id/customerListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_right" />
     </fragment>
 
     <fragment
@@ -39,8 +41,8 @@
         tools:layout="@layout/fragment_customer_detail">
         <argument
             android:name="customerKey"
-            app:nullable="false"
-            app:argType="long" />
+            app:argType="long"
+            app:nullable="false" />
     </fragment>
 
 </navigation>

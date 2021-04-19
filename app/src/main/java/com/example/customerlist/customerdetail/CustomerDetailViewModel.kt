@@ -2,7 +2,6 @@ package com.example.customerlist.customerdetail
 
 import android.view.View
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.customerlist.database.Customer
@@ -10,17 +9,14 @@ import com.example.customerlist.database.CustomerDatabaseDao
 
 class CustomerDetailViewModel(
     customerKey: Long = 0L,
-    dataSource: CustomerDatabaseDao) : ViewModel() {
+    dataSource: CustomerDatabaseDao
+) : ViewModel() {
 
-        val database = dataSource
+    val database = dataSource
 
-    private val customer: LiveData<Customer>
+    private val customer: LiveData<Customer> = database.getCustomerWithId(customerKey)
 
     fun getCustomer() = customer
-
-    init {
-        customer = database.getCustomerWithId(customerKey)
-    }
 
     val noCpfTextVisible = Transformations.map(getCustomer()) {
         if (it.cpf.isEmpty()) View.VISIBLE else View.GONE

@@ -130,12 +130,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registration_date_edit_text" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <Spinner
                 android:id="@+id/uf_spinner"
                 android:layout_width="150dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin"
+                android:background="@drawable/spinner_background"
                 android:entries="@array/ufs_array"
+                android:paddingStart="@dimen/drawable_spinner_margin"
+                android:paddingEnd="@dimen/drawable_margin"
                 app:layout_constraintBottom_toBottomOf="@+id/date_of_birth_edit_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registration_hour_edit_text"

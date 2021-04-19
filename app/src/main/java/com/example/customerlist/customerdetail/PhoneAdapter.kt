@@ -1,4 +1,4 @@
-package com.example.Phonelist.Phonedetail
+package com.example.customerlist.customerdetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

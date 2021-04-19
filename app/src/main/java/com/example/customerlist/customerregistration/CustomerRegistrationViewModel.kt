@@ -13,7 +13,6 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CustomerRegistrationViewModel(
     dataSource: CustomerDatabaseDao
@@ -103,18 +102,18 @@ class CustomerRegistrationViewModel(
         hourOfRegistration.value = "%02d:%02d".format(hour, minute)
     }
 
-    fun isCpfRequired() = uf.value.equals("SP")
+    private fun isCpfRequired() = uf.value.equals("SP")
 
-    fun isCpfValid(): Boolean {
+    private fun isCpfValid(): Boolean {
         if (isCpfRequired()) {
             return cpf.value?.length == 14
         }
         return cpf.value?.length == 14 || cpf.value?.isEmpty() == true
     }
 
-    fun isOlderThan18Required() = uf.value.equals("MG")
+    private fun isOlderThan18Required() = uf.value.equals("MG")
 
-    fun isOlderThan18(): Boolean {
+    private fun isOlderThan18(): Boolean {
         if (dateOfBirth.value?.isNotEmpty() == true) {
             val formatter = DateTimeFormatter.ofPattern(dateFormat)
             val date: LocalDate = LocalDate.parse(dateOfBirth.value, formatter)
@@ -125,7 +124,7 @@ class CustomerRegistrationViewModel(
         return false
     }
 
-    fun isFormValid(): Boolean {
+    private fun isFormValid(): Boolean {
         if (name.value?.isNotEmpty() == true) {
             if (isCpfRequired()) {
                 return isCpfValid()

@@ -11,16 +11,18 @@ import androidx.navigation.fragment.findNavController
 import com.example.customerlist.R
 import com.example.customerlist.database.CustomerDatabase
 import com.example.customerlist.databinding.FragmentCustomerListBinding
-import com.google.android.material.snackbar.Snackbar
 
 class CustomerListFragment : Fragment() {
+
+    private lateinit var binding: FragmentCustomerListBinding
+    private lateinit var customerListViewModel: CustomerListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        val binding: FragmentCustomerListBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_customer_list, container, false
         )
 
@@ -28,22 +30,28 @@ class CustomerListFragment : Fragment() {
         val dataSource = CustomerDatabase.getInstance(application).customerDatabaseDao
 
         val viewModelFactory = CustomerListViewModelFactory(dataSource)
-        val customerListViewModel =
+        customerListViewModel =
             ViewModelProvider(this, viewModelFactory).get(CustomerListViewModel::class.java)
+
+        customerListViewModel.navigateToCustomerRegistration.observe(viewLifecycleOwner, {
+            if (it == true) navigateToRegistration()
+        })
+
+        customerListViewModel.navigateToCustomerDetails.observe(viewLifecycleOwner, { customerKey ->
+            customerKey?.let {
+                navigateToDetail(customerKey)
+            }
+        })
 
         binding.customerListViewModel = customerListViewModel
         binding.lifecycleOwner = this
 
-        customerListViewModel.navigateToCustomerRegistration.observe(viewLifecycleOwner, {
-            if (it == true) {
-                this.findNavController().navigate(
-                    CustomerListFragmentDirections
-                        .actionCustomerListFragmentToCustomerRegistrationFragment()
-                )
-                customerListViewModel.doneNavigatingToRegistration()
-            }
-        })
+        initiateAdapter()
 
+        return binding.root
+    }
+
+    private fun initiateAdapter() {
         val adapter = CustomerAdapter(CustomerListener { customerId ->
             customerListViewModel.onCustomerClick(customerId)
         })
@@ -54,17 +62,21 @@ class CustomerListFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
+    }
 
-        customerListViewModel.navigateToCustomerDetails.observe(viewLifecycleOwner, { customer ->
-            customer?.let {
-                this.findNavController().navigate(
-                    CustomerListFragmentDirections
-                        .actionCustomerListFragmentToCustomerDetailFragment(customer)
-                )
-                customerListViewModel.doneNavigatingToDetails()
-            }
-        })
+    private fun navigateToRegistration() {
+        this.findNavController().navigate(
+            CustomerListFragmentDirections
+                .actionCustomerListFragmentToCustomerRegistrationFragment()
+        )
+        customerListViewModel.doneNavigatingToRegistration()
+    }
 
-        return binding.root
+    private fun navigateToDetail(customerKey: Long) {
+        this.findNavController().navigate(
+            CustomerListFragmentDirections
+                .actionCustomerListFragmentToCustomerDetailFragment(customerKey)
+        )
+        customerListViewModel.doneNavigatingToDetails()
     }
 }

@@ -7,7 +7,6 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -21,8 +20,9 @@ import java.util.*
 
 class CustomerRegistrationFragment : Fragment() {
 
-    var cal = Calendar.getInstance()
     private lateinit var binding: FragmentCustomerRegistrationBinding
+    private lateinit var customerRegistrationViewModel: CustomerRegistrationViewModel
+    private var cal: Calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,46 +37,28 @@ class CustomerRegistrationFragment : Fragment() {
         val dataSource = CustomerDatabase.getInstance(application).customerDatabaseDao
 
         val viewModelFactory = CustomerRegistrationViewModelFactory(dataSource)
-        val customerRegistrationViewModel =
+        customerRegistrationViewModel =
             ViewModelProvider(this, viewModelFactory).get(CustomerRegistrationViewModel::class.java)
 
-        binding.customerRegistrationViewModel = customerRegistrationViewModel
-        binding.lifecycleOwner = this
-
-        //Observar a livedata para navegar
         customerRegistrationViewModel.navigateToCustomerList.observe(viewLifecycleOwner, {
-            if (it == true) {
-                this.findNavController().navigate(
-                    CustomerRegistrationFragmentDirections
-                        .actionCustomerRegistrationFragmentToCustomerListFragment()
-                )
-                customerRegistrationViewModel.doneNavigating()
-            }
+            if (it == true) navigateToList()
         })
 
-        val dateSetListenerBirth = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(
-                view: DatePicker, year: Int, monthOfYear: Int,
-                dayOfMonth: Int
-            ) {
+        val dateSetListenerBirth =
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 customerRegistrationViewModel.updateDateOfBirth(cal)
             }
-        }
 
-        val dateSetListenerRegistration = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(
-                view: DatePicker, year: Int, monthOfYear: Int,
-                dayOfMonth: Int
-            ) {
+        val dateSetListenerRegistration =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 customerRegistrationViewModel.updateDateOfRegistration(cal)
             }
-        }
 
         customerRegistrationViewModel.clickDateOfBirth.observe(viewLifecycleOwner, {
             if (it == true) showDatePickerDialog(dateSetListenerBirth)
@@ -102,15 +84,24 @@ class CustomerRegistrationFragment : Fragment() {
         customerRegistrationViewModel.phoneEditTextArray.value?.add(binding.phoneEditText)
 
         customerRegistrationViewModel.clickAddNumber.observe(viewLifecycleOwner, {
-            val editText = createPhoneField()
-            customerRegistrationViewModel.phoneEditTextArray.value?.add(editText)
-            binding.editTextContainerLl.addView(editText)
+            createPhoneField()
         })
+
+        binding.customerRegistrationViewModel = customerRegistrationViewModel
+        binding.lifecycleOwner = this
 
         return binding.root
     }
 
-    fun showDatePickerDialog(dateSetListener: DatePickerDialog.OnDateSetListener) {
+    private fun navigateToList() {
+        this.findNavController().navigate(
+            CustomerRegistrationFragmentDirections
+                .actionCustomerRegistrationFragmentToCustomerListFragment()
+        )
+        customerRegistrationViewModel.doneNavigating()
+    }
+
+    private fun showDatePickerDialog(dateSetListener: DatePickerDialog.OnDateSetListener) {
         DatePickerDialog(
             requireContext(),
             dateSetListener,
@@ -120,7 +111,7 @@ class CustomerRegistrationFragment : Fragment() {
         ).show()
     }
 
-    fun createPhoneField(): EditText {
+    private fun createPhoneField() {
         val editText = EditText(context)
         editText.setCompoundDrawablesWithIntrinsicBounds(
             R.drawable.ic_outline_local_phone_24,
@@ -135,6 +126,7 @@ class CustomerRegistrationFragment : Fragment() {
         editText.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
         editText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
 
-        return editText
+        customerRegistrationViewModel.phoneEditTextArray.value?.add(editText)
+        binding.editTextContainerLl.addView(editText)
     }
 }

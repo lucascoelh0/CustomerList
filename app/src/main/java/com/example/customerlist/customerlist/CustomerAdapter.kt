@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.customerlist.database.Customer
 import com.example.customerlist.databinding.ListItemCustomerBinding
 
-class CustomerAdapter(val clickListener: CustomerListener) : ListAdapter<Customer, CustomerAdapter.ViewHolder>(CustomerDiffCallback()) {
+class CustomerAdapter(private val clickListener: CustomerListener) : ListAdapter<Customer, CustomerAdapter.ViewHolder>(CustomerDiffCallback()) {
 
     class CustomerDiffCallback : DiffUtil.ItemCallback<Customer>() {
         override fun areItemsTheSame(oldItem: Customer, newItem: Customer): Boolean {
