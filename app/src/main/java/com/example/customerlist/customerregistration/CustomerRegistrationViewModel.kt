@@ -126,13 +126,11 @@ class CustomerRegistrationViewModel(
 
     private fun isFormValid(): Boolean {
         if (name.value?.isNotEmpty() == true) {
-            if (isCpfRequired()) {
-                return isCpfValid()
-            } else if (isOlderThan18Required()) {
+            if (isOlderThan18Required()) {
                 return isOlderThan18()
             }
 
-            return true
+            return isCpfValid()
         }
 
         return false
