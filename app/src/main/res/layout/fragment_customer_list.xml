@@ -60,7 +60,6 @@
                 android:id="@+id/add_client_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
                 android:layout_marginBottom="@dimen/margin"
                 android:backgroundTint="@color/app_color"
                 android:contentDescription="@string/add_client"
