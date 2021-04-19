@@ -22,4 +22,7 @@
     <string name="sem_telefones_cadastrados">Sem telefones cadastrados</string>
     <string name="nao_cadastrada">Não cadastrada</string>
     <string name="nao_cadastrado">Não cadastrado</string>
+    <string name="cadastro_de_cliente">Cadastro de Cliente</string>
+    <string name="nascimento">Nascimento</string>
+    <string name="adicionar_numero_de_telefone">Adicionar número de telefone</string>
 </resources>

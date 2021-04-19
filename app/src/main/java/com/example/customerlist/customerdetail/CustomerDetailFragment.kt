@@ -25,7 +25,7 @@ class CustomerDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: FragmentCustomerDetailBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_customer_detail, container, false
@@ -55,6 +55,7 @@ class CustomerDetailFragment : Fragment() {
         customerDetailViewModel.getCustomer().observe(viewLifecycleOwner, {
             if (it !== null) {
                 binding.customer = it
+                binding.customerAvatarview.text = it.name
             }
         })
 

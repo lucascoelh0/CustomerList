@@ -17,15 +17,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin"
-        android:onClick="@{() -> clickListener.onClick(customer)}">
+        android:onClick="@{() -> clickListener.onClick(customer)}"
+        android:paddingBottom="@dimen/margin">
 
         <xyz.schwaab.avvylib.AvatarView
             android:id="@+id/customer_avatar"
             avatarText="@{customer}"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            app:avvy_border_color="@color/app_color"
             app:avvy_border_thickness="2dp"
+            app:avvy_text_color="@color/app_color"
             app:avvy_text_size="21sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

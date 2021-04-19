@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +27,7 @@ class CustomerRegistrationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_customer_registration, container, false
@@ -91,8 +92,8 @@ class CustomerRegistrationFragment : Fragment() {
                 val minute = cal.get(Calendar.MINUTE)
 
                 TimePickerDialog(
-                    context, { _, hour, minute ->
-                        customerRegistrationViewModel.updateHourOfRegistration(hour, minute)
+                    context, { _, _hour, _minute ->
+                        customerRegistrationViewModel.updateHourOfRegistration(_hour, _minute)
                     }, hour, minute, true
                 ).show()
             }
@@ -128,9 +129,11 @@ class CustomerRegistrationFragment : Fragment() {
             0
         )
         editText.hint = getString(R.string.telefone)
-        editText.compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.margin)
+        editText.compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.drawable_margin)
         editText.inputType = InputType.TYPE_CLASS_PHONE
         editText.maxLines = 1
+        editText.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+        editText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
 
         return editText
     }

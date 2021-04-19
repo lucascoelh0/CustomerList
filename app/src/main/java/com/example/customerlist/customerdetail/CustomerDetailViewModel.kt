@@ -9,8 +9,8 @@ import com.example.customerlist.database.Customer
 import com.example.customerlist.database.CustomerDatabaseDao
 
 class CustomerDetailViewModel(
-    private val customerKey: Long = 0L,
-    val dataSource: CustomerDatabaseDao) : ViewModel() {
+    customerKey: Long = 0L,
+    dataSource: CustomerDatabaseDao) : ViewModel() {
 
         val database = dataSource
 
@@ -35,6 +35,4 @@ class CustomerDetailViewModel(
     val noPhonesTextVisible = Transformations.map(phones) {
         if (it.isEmpty()) View.VISIBLE else View.GONE
     }
-
-
 }

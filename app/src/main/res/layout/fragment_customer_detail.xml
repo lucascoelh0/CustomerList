@@ -18,139 +18,161 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/detail_background"
         android:paddingStart="@dimen/margin"
-        android:paddingTop="@dimen/margin"
+        android:paddingTop="@dimen/double_margin"
         android:paddingEnd="@dimen/margin"
         tools:context=".customerdetail.CustomerDetailFragment">
 
-        <TextView
-            android:id="@+id/name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nome"
+        <xyz.schwaab.avvylib.AvatarView
+            android:id="@+id/customer_avatarview"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:avvy_border_color="@color/white"
+            app:avvy_text_size="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/customer_name_text"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{customerDetailViewModel.customer.name}"
+            android:layout_marginTop="@dimen/margin"
+            android:text="@{customer.name}"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name_text" />
+            app:layout_constraintTop_toBottomOf="@+id/customer_avatarview" />
 
-        <TextView
-            android:id="@+id/cpf_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/cpf"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_name_text" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nao_cadastrado"
-            android:visibility="@{customerDetailViewModel.noCpfTextVisible}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cpf_text" />
-
-        <TextView
-            android:id="@+id/customer_cpf_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{customerDetailViewModel.customer.cpf}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cpf_text" />
-
-        <TextView
-            android:id="@+id/uf_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/uf"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_cpf_text" />
-
-        <TextView
-            android:id="@+id/customer_uf_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{customerDetailViewModel.customer.uf}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/uf_text" />
-
-        <TextView
-            android:id="@+id/date_of_birth_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/data_de_nascimento"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_uf_text" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nao_cadastrada"
-            android:visibility="@{customerDetailViewModel.noDateOfBirthTextVisible}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_of_birth_text" />
-
-        <TextView
-            android:id="@+id/customer_date_of_birth_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{customerDetailViewModel.customer.dateOfBirth}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/date_of_birth_text" />
-
-        <TextView
-            android:id="@+id/registration_date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/data_do_cadastro"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_date_of_birth_text" />
-
-        <TextView
-            android:id="@+id/customer_registration_date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{customerDetailViewModel.customer.registrationDateHour}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registration_date_text" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/telefones"
-            android:layout_marginTop="@dimen/margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_registration_date_text" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sem_telefones_cadastrados"
-            android:visibility="@{customerDetailViewModel.noPhonesTextVisible}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/phone_list"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/double_margin"
+            android:layout_marginBottom="@dimen/margin"
+            android:background="@drawable/card_background"
+            android:elevation="@dimen/card_elevation"
+            android:padding="@dimen/margin"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:layout_editor_absoluteX="16dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customer_name_text">
+
+            <TextView
+                android:id="@+id/cpf_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cpf"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nao_cadastrado"
+                android:visibility="@{customerDetailViewModel.noCpfTextVisible}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpf_text" />
+
+            <TextView
+                android:id="@+id/customer_cpf_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{customerDetailViewModel.customer.cpf}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cpf_text" />
+
+            <TextView
+                android:id="@+id/uf_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/uf"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_cpf_text" />
+
+            <TextView
+                android:id="@+id/customer_uf_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{customer.uf}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uf_text" />
+
+            <TextView
+                android:id="@+id/date_of_birth_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/data_de_nascimento"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_uf_text" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nao_cadastrada"
+                android:visibility="@{customerDetailViewModel.noDateOfBirthTextVisible}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_of_birth_text" />
+
+            <TextView
+                android:id="@+id/customer_date_of_birth_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{customer.dateOfBirth}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date_of_birth_text" />
+
+            <TextView
+                android:id="@+id/registration_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/data_do_cadastro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_date_of_birth_text" />
+
+            <TextView
+                android:id="@+id/customer_registration_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{customer.registrationDateHour}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registration_date_text" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/telefones"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_registration_date_text" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sem_telefones_cadastrados"
+                android:visibility="@{customerDetailViewModel.noPhonesTextVisible}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/phone_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:layout_editor_absoluteX="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

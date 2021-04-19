@@ -132,13 +132,6 @@ class CustomerRegistrationViewModel(
             } else if (isOlderThan18Required()) {
                 return isOlderThan18()
             }
-            phoneEditTextArray.value?.forEach {
-                if (it.text.isNotEmpty()) {
-                    if (it.length() < 8) {
-                        return false
-                    }
-                }
-            }
 
             return true
         }
